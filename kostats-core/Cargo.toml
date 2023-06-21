@@ -1,0 +1,15 @@
+[package]
+name = "kostats-core"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.71"
+async_once = "0.2.6"
+lazy_static = "1.4.0"
+redis = { version = "0.23.0", features = ["tokio-comp"] }
+serde_json = "1.0.96"
+sqlx = { version = "0.6.3", features = ["postgres", "macros", "runtime-tokio-native-tls"] }
+tokio = { version = "1.28.2", features = ["full"] }

@@ -1,0 +1,2 @@
+[workspace]
+members = ["kostats-core", "kostats-web", "kostats-cli"]

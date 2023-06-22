@@ -9,3 +9,6 @@ edition = "2021"
 clap = { version = "4.3.4", features = ["derive"] }
 tokio = { version = "1.28.2", features = ["full"] }
 kostats-web = { path = "../kostats-web/" }
+lazy_static = "1.4.0"
+anyhow = "1.0.71"
+futures-util = "0.3.28"

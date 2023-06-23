@@ -46,4 +46,38 @@ pub async fn make_request(path: &str) -> Option<Value> {
     }
 }
 
+#[macro_export]
+macro_rules! default_req {
+    ( $params:expr, $arg:expr, $function:ident ) => {
+        {
+            match $params.next() {
+                Some(x) => {
+                    if x.0 == $arg {
+                        match x.1.to_string().parse() {
+                            Ok(x) => {
+                                match DATABASE
+                                    .lock()
+                                    .await
+                                    .as_ref()
+                                    .unwrap()
+                                    .$function(x)
+                                    .await
+                                {
+                                    Some(x) => json!({ "result": x }),
+                                    None => json!({"error":"Could not be found"}),
+                                }
+
+                            }
+                            Err(_) => json!({"error":format!("\"{}\" was not the right type", $arg)}),
+                        }
+                    } else {
+                        json!({"error":format!("Did not specify \"{}\" url paramiter", $arg)})
+                    }
+                }
+                None => json!({"error":format!("Did not specify \"{}\" url paramiter", $arg)}),
+            }
+        }
+    };
+}
+
 pub mod player;

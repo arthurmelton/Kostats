@@ -25,6 +25,9 @@ pub enum Item {
     PlayerJoin {
         username: String,
     },
+    PlayerLeave {
+        username: String,
+    },
 
     JoinMatchMake {
         username: String,

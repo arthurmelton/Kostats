@@ -12,9 +12,15 @@ impl Realtime {
                 _ => None,
             };
         }
+        if message.command == "UNSUBSCRIBE" && message.effect.starts_with("socket:user:") {
+            let player = message.effect[12..].to_string();
+            return Some(Item::PlayerLeave {
+                username: self.database.find_player_name(player.parse().ok()?).await?
+            });
+        }
         else if message.command == "HSET" && message.effect.starts_with("user:session:") {
             let player = message.effect[13..].to_string();
-            return if !message.value["issued_at"].is_null() && message.value["issued_at"] == message.value["connect_time_utc"] {
+            return if !message.value["issued_at"].is_null() && !message.value["connect_time_utc"].is_null() {
                 return Some(Item::PlayerJoin {
                     username: self.database.find_player_name(player.parse().ok()?).await?
                 });

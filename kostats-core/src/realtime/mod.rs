@@ -17,11 +17,21 @@ pub struct Realtime {
 #[serde(tag = "type")]
 #[serde(content = "result")]
 pub enum Item {
-    LevelUp { username: String, xp: u64 },
+    LevelUp {
+        username: String,
+        xp: u64,
+    },
 
-    JoinMatchMake { username: String },
-    LeaveMatchMake { username: String },
-    MatchResult { game: Box<Player>, total: Box<Player> },
+    JoinMatchMake {
+        username: String,
+    },
+    LeaveMatchMake {
+        username: String,
+    },
+    MatchResult {
+        game: Box<Player>,
+        total: Box<Player>,
+    },
 
     End,
 }

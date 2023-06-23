@@ -39,7 +39,7 @@ impl Realtime {
                         let pairs = &i["pairs"];
                         return Some(Item::MatchResult {
                             game: get_player(player.clone(), pairs, "lt"),
-                            total: get_player(player.clone(), pairs, "sn9"),
+                            total: get_player(player, pairs, "sn9"),
                         });
                     }
                 }
@@ -52,7 +52,7 @@ impl Realtime {
 
 fn get_player(name: String, pairs: &Value, prefix: &str) -> Box<Player> {
     Box::new(Player {
-        name: name,
+        name,
 
         distance_glide: to_int(pairs[format!("{prefix}.distance_glide")].clone()),
         distance_sprint: to_int(pairs[format!("{prefix}.distance_sprint")].clone()),

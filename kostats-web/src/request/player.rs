@@ -114,19 +114,10 @@ pub async fn get_player(params: &mut Parse<'_>) -> Value {
         Some(x) => {
             if x.0 == "id" {
                 match x.1.to_string().parse::<i64>() {
-                    Ok(id) => {
-                        match DATABASE
-                            .lock()
-                            .await
-                            .as_ref()
-                            .unwrap()
-                            .get_player(id)
-                            .await
-                        {
-                            Some(x) => json!({ "result": x }),
-                            None => json!({"error":"Could not find user"}),
-                        }
-                    }
+                    Ok(id) => match DATABASE.lock().await.as_ref().unwrap().get_player(id).await {
+                        Some(x) => json!({ "result": x }),
+                        None => json!({"error":"Could not find user"}),
+                    },
                     Err(_) => json!({"error":"Id is not a number"}),
                 }
             } else {

@@ -12,7 +12,7 @@ impl Realtime {
                 _ => None,
             };
         }
-        if message.command == "UNSUBSCRIBE" && message.effect.starts_with("socket:user:") {
+        else if message.command == "UNSUBSCRIBE" && message.effect.starts_with("socket:user:") {
             let player = message.effect[12..].to_string();
             return Some(Item::PlayerLeave {
                 username: self.database.find_player_name(player.parse().ok()?).await?

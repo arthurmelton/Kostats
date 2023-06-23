@@ -29,6 +29,11 @@ pub enum Item {
         username: String,
     },
 
+    GroupInvite {
+        sender: String,
+        receiver: String,
+    },
+
     JoinMatchMake {
         username: String,
     },
@@ -107,7 +112,8 @@ impl Realtime {
                 if let Some(command) = Command::from_redis(command) {
                     for i in [
                         selfs.player_update(command.clone()).await,
-                        selfs.matchmake_update(command.clone()).await
+                        selfs.matchmake_update(command.clone()).await,
+                        selfs.group_update(command.clone()).await
                     ].into_iter().flatten() {
                         yield Ok(i);
                     }
@@ -120,3 +126,4 @@ impl Realtime {
 
 pub mod matchmake;
 pub mod player;
+pub mod group;

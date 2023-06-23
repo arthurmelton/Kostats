@@ -55,7 +55,7 @@ fn get_player(name: String, pairs: &Value, prefix: &str) -> Box<Player> {
         name: name,
 
         distance_glide: to_int(pairs[format!("{prefix}.distance_glide")].clone()),
-        distance_sprint: to_int(pairs[format!("{prefix}.distance_walk")].clone()),
+        distance_sprint: to_int(pairs[format!("{prefix}.distance_sprint")].clone()),
         distance_walk: to_int(pairs[format!("{prefix}.distance_walk")].clone()),
         distance_ballform: to_int(pairs[format!("{prefix}.distance_ballform")].clone()),
 

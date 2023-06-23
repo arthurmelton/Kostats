@@ -1,5 +1,6 @@
-use crate::{database::Database, shared::player::Player};
+use crate::{database::{Database}, shared::player::Player};
 use sqlx::query;
+
 
 impl Database {
     pub async fn find_player_name(&self, id: i64) -> Option<String> {
@@ -55,82 +56,42 @@ impl Database {
             .ok()?;
         let player = query.iter();
 
+        macro_rules! get_item {
+            ( $player:expr, $key:expr ) => {
+                {
+                    $player
+                        .clone()
+                        .find(|x| x.key == $key)
+                        .map(|x| x.value.parse::<i64>().unwrap())
+                }
+            };
+        }
+
         Some(Player {
             name: self.find_player_name(id).await?,
 
-            distance_glide: player
-                .clone()
-                .find(|x| x.key == "sn9.distance_glide")
-                .map(|x| x.value.parse::<i64>().unwrap()),
-            distance_sprint: player
-                .clone()
-                .find(|x| x.key == "sn9.distance_sprint")
-                .map(|x| x.value.parse::<i64>().unwrap()),
-            distance_walk: player
-                .clone()
-                .find(|x| x.key == "sn9.distance_walk")
-                .map(|x| x.value.parse::<i64>().unwrap()),
-            distance_ballform: player
-                .clone()
-                .find(|x| x.key == "sn9.distance_ballform")
-                .map(|x| x.value.parse::<i64>().unwrap()),
+            distance_glide: get_item!(player, "sn9.distance_glide"),
+            distance_sprint: get_item!(player, "sn9.distance_sprint"),
+            distance_walk: get_item!(player, "sn9.distance_walk"),
+            distance_ballform: get_item!(player, "sn9.distance_ballform"),
 
-            hit_given: player
-                .clone()
-                .find(|x| x.key == "sn9.unr.hit_given")
-                .map(|x| x.value.parse::<i64>().unwrap()),
-            hit_received: player
-                .clone()
-                .find(|x| x.key == "sn9.unr.hit_received")
-                .map(|x| x.value.parse::<i64>().unwrap()),
+            hit_given: get_item!(player, "sn9.unr.hit_given"),
+            hit_received: get_item!(player, "sn9.unr.hit_received"),
 
-            ko_given: player
-                .clone()
-                .find(|x| x.key == "sn9.unr.ko_given")
-                .map(|x| x.value.parse::<i64>().unwrap()),
-            ko_given_doubles: player
-                .clone()
-                .find(|x| x.key == "sn9.unr.ko_given_doubles")
-                .map(|x| x.value.parse::<i64>().unwrap()),
-            ko_given_frenzes: player
-                .clone()
-                .find(|x| x.key == "sn9.unr.ko_given_frenzes")
-                .map(|x| x.value.parse::<i64>().unwrap()),
-            ko_given_triples: player
-                .clone()
-                .find(|x| x.key == "sn9.unr.ko_given_triples")
-                .map(|x| x.value.parse::<i64>().unwrap()),
-            ko_received: player
-                .clone()
-                .find(|x| x.key == "sn9.unr.ko_received")
-                .map(|x| x.value.parse::<i64>().unwrap()),
+            ko_given: get_item!(player, "sn9.unr.ko_given"),
+            ko_given_doubles: get_item!(player, "sn9.unr.ko_given_doubles"),
+            ko_given_frenzes: get_item!(player, "sn9.unr.ko_given_frenzes"),
+            ko_given_triples: get_item!(player, "sn9.unr.ko_given_triples"),
+            ko_received: get_item!(player, "sn9.unr.ko_received"),
 
-            successful_tackles: player
-                .clone()
-                .find(|x| x.key == "sn9.unr.successful_tackles")
-                .map(|x| x.value.parse::<i64>().unwrap()),
+            successful_tackles: get_item!(player, "sn9.unr.successful_tackles"),
 
-            playtime: player
-                .clone()
-                .find(|x| x.key == "sn9.tko.playtime")
-                .map(|x| x.value.parse::<i64>().unwrap()),
+            playtime: get_item!(player, "sn9.tko.playtime"),
 
-            mvp: player
-                .clone()
-                .find(|x| x.key == "sn9.tko.match_mvp")
-                .map(|x| x.value.parse::<i64>().unwrap()),
-            match_wins: player
-                .clone()
-                .find(|x| x.key == "sn9.tko.wins_match")
-                .map(|x| x.value.parse::<i64>().unwrap()),
-            rounds_win: player
-                .clone()
-                .find(|x| x.key == "sn9.tko.wins_round")
-                .map(|x| x.value.parse::<i64>().unwrap()),
-            rounds_lost: player
-                .clone()
-                .find(|x| x.key == "sn9.tko.losses_round")
-                .map(|x| x.value.parse::<i64>().unwrap()),
+            mvp: get_item!(player, "sn9.tko.match_mvp"),
+            match_wins: get_item!(player, "sn9.tko.wins_match"),
+            rounds_win: get_item!(player, "sn9.tko.wins_round"),
+            rounds_lost: get_item!(player, "sn9.tko.losses_round"),
         })
     }
 }

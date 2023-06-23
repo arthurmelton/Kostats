@@ -1,6 +1,5 @@
-use crate::{database::{Database}, shared::player::Player};
+use crate::{database::Database, shared::player::Player};
 use sqlx::query;
-
 
 impl Database {
     pub async fn find_player_name(&self, id: i64) -> Option<String> {
@@ -57,14 +56,12 @@ impl Database {
         let player = query.iter();
 
         macro_rules! get_item {
-            ( $player:expr, $key:expr ) => {
-                {
-                    $player
-                        .clone()
-                        .find(|x| x.key == $key)
-                        .map(|x| x.value.parse::<i64>().unwrap())
-                }
-            };
+            ( $player:expr, $key:expr ) => {{
+                $player
+                    .clone()
+                    .find(|x| x.key == $key)
+                    .map(|x| x.value.parse::<i64>().unwrap())
+            }};
         }
 
         Some(Player {

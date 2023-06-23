@@ -11,23 +11,22 @@ impl Realtime {
                 "_persistence_get_user_pairs" => self.match_done(player, message).await,
                 _ => None,
             };
-        }
-        else if message.command == "UNSUBSCRIBE" && message.effect.starts_with("socket:user:") {
+        } else if message.command == "UNSUBSCRIBE" && message.effect.starts_with("socket:user:") {
             let player = message.effect[12..].to_string();
             return Some(Item::PlayerLeave {
-                username: self.database.find_player_name(player.parse().ok()?).await?
+                username: self.database.find_player_name(player.parse().ok()?).await?,
             });
-        }
-        else if message.command == "HSET" && message.effect.starts_with("user:session:") {
+        } else if message.command == "HSET" && message.effect.starts_with("user:session:") {
             let player = message.effect[13..].to_string();
-            return if !message.value["issued_at"].is_null() && !message.value["connect_time_utc"].is_null() {
+            return if !message.value["issued_at"].is_null()
+                && !message.value["connect_time_utc"].is_null()
+            {
                 return Some(Item::PlayerJoin {
-                    username: self.database.find_player_name(player.parse().ok()?).await?
+                    username: self.database.find_player_name(player.parse().ok()?).await?,
                 });
-            }
-            else {
+            } else {
                 None
-            }
+            };
         }
 
         None

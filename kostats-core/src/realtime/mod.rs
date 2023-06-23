@@ -124,6 +124,6 @@ impl Realtime {
     }
 }
 
+pub mod group;
 pub mod matchmake;
 pub mod player;
-pub mod group;

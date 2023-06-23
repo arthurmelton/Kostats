@@ -48,9 +48,9 @@ pub async fn make_request(path: &str) -> Option<Value> {
 
 #[macro_export]
 macro_rules! default_req {
-    ( $params:expr, $arg:expr, $function:ident ) => {
-        {
-            match $params.next() {
+    ( $arg:expr, $function:ident ) => {
+        pub async fn $function(params: &mut Parse<'_>) -> Value {
+            match params.next() {
                 Some(x) => {
                     if x.0 == $arg {
                         match x.1.to_string().parse() {

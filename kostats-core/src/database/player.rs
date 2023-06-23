@@ -28,7 +28,7 @@ impl Database {
                 .fetch_one(&self.pool)
                 .await
                 .ok()?
-                .raw_xp,
+                .raw_xp_s6,
         )
     }
 
@@ -54,6 +54,8 @@ impl Database {
             .await
             .ok()?;
         let mut player = query.iter();
+
+        println!("{player:?}");
 
         Some(Player {
             name: self.find_player_name(id).await?,

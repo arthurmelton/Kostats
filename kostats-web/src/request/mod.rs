@@ -37,6 +37,9 @@ pub async fn make_request(path: &str) -> Option<Value> {
     match path.path() {
         "/api/find_player_id" => Some(player::find_player_id(&mut path.query_pairs()).await),
         "/api/find_player_name" => Some(player::find_player_name(&mut path.query_pairs()).await),
+        "/api/find_player_xp" => Some(player::find_player_xp(&mut path.query_pairs()).await),
+        "/api/find_player_xp_touple" => Some(player::find_player_xp_touple(&mut path.query_pairs()).await),
+        "/api/get_player" => Some(player::get_player(&mut path.query_pairs()).await),
         _ => None,
     }
 }

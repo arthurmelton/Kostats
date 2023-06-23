@@ -12,6 +12,17 @@ impl Realtime {
                 _ => None,
             };
         }
+        else if message.command == "HSET" && message.effect.starts_with("user:session:") {
+            let player = message.effect[13..].to_string();
+            return if !message.value["issued_at"].is_null() && message.value["issued_at"] == message.value["connect_time_utc"] {
+                return Some(Item::PlayerJoin {
+                    username: self.database.find_player_name(player.parse().ok()?).await?
+                });
+            }
+            else {
+                None
+            }
+        }
 
         None
     }

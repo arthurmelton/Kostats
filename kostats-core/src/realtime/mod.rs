@@ -22,6 +22,10 @@ pub enum Item {
         xp: u64,
     },
 
+    PlayerJoin {
+        username: String,
+    },
+
     JoinMatchMake {
         username: String,
     },
